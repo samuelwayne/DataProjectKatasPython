@@ -91,6 +91,14 @@ print('5 - Solución:', solucion_5)
 #### 6 - Función que calcula el factorial de un número de manera recursiva:
 
 def factorial_def_recursiva (n):
+    """Esta funcion devuelve el factorial del un número.
+
+    Args:
+        n (int): Un número entero cualquiera.
+
+    Returns:
+        int: Resultado de realizar el factorial de un número
+    """
     if n > 1:
         resultado = n * factorial_def_recursiva(n-1)
         return resultado
@@ -111,4 +119,37 @@ solucion_7 = list(map(lambda x: str(x), lista_tuplas7))
 print('7 - Solución:', solucion_7)
 
 ####
-#### 8 - 
+#### 8 - Escribe un programa que pida al usuario dos números e intente dividirlos. Si el usuario ingresa
+# un valor no numérico o intenta dividir por cero, maneja esas excepciones de manera adecuada. Asegúrate
+# de mostrar un mensaje indicando si la división fue exitosa o no.
+# 
+# try:
+#     numero_x_8 = int(input('Escriba un número: '))
+#     numero_y_8 = int(input('Escriba otro numero por el que quiera dividir el primero: '))
+#     solucion_8 = numero_x_8 / numero_y_8
+#     print('Operación realizada con éxito!\n8 - Solución:', solucion_8)
+# except ValueError:
+#     print('División no realizada. No es posible operar ese valor. Por favor, debe introducir un número')
+# except ZeroDivisionError:
+#     print('División no realizada. No es posible dividir entre 0')
+
+####
+#### 9 - Escribe una función que tome una lista de nombres de mascotas como parámetro y devuelva una nueva
+# lista excluyendo ciertas mascotas prohibidas en España. La lista de mascotas a excluir es ["Mapache",
+# "Tigre", "Serpiente Pitón", "Cocodrilo", "Oso"]. Usa la función filter():
+
+lista_mascotas9 = ["Perro", "Gato", "Serpiente", "Hámster", "tigre"]
+
+def filtrar_mascotas_prohibidas_España(lista_mascotas):
+    mascotas_prohibidas_España = ["Mapache", "Tigre", "Serpiente Pitón", "Cocodrilo", "Oso"]
+    def filtrar_mascota(mascota):
+        if mascota.title() not in mascotas_prohibidas_España:
+            return mascota
+    lista_filtrada = list(filter(filtrar_mascota, lista_mascotas))
+    return lista_filtrada
+
+solucion_9 =  filtrar_mascotas_prohibidas_España(lista_mascotas9)
+print('9 - Solución:', solucion_9) #el resultado devuelve 'serpiente' porque es distinto a 'serpiente pitón'
+
+####
+#### 10 - 
