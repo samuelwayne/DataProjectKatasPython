@@ -122,16 +122,16 @@ print('7 - Solución:', solucion_7)
 #### 8 - Escribe un programa que pida al usuario dos números e intente dividirlos. Si el usuario ingresa
 # un valor no numérico o intenta dividir por cero, maneja esas excepciones de manera adecuada. Asegúrate
 # de mostrar un mensaje indicando si la división fue exitosa o no.
-# 
+
 # try:
 #     numero_x_8 = int(input('Escriba un número: '))
 #     numero_y_8 = int(input('Escriba otro numero por el que quiera dividir el primero: '))
 #     solucion_8 = numero_x_8 / numero_y_8
 #     print('Operación realizada con éxito!\n8 - Solución:', solucion_8)
 # except ValueError:
-#     print('División no realizada. No es posible operar ese valor. Por favor, debe introducir un número')
+#     print('División no realizada. No es posible operar ese valor. Por favor, debe introducir un número.')
 # except ZeroDivisionError:
-#     print('División no realizada. No es posible dividir entre 0')
+#     print('División no realizada. No es posible dividir entre 0.')
 
 ####
 #### 9 - Escribe una función que tome una lista de nombres de mascotas como parámetro y devuelva una nueva
@@ -143,6 +143,15 @@ lista_mascotas9 = ["Perro", "Gato", "Serpiente", "Hámster", "tigre"]
 def filtrar_mascotas_prohibidas_España(lista_mascotas):
     mascotas_prohibidas_España = ["Mapache", "Tigre", "Serpiente Pitón", "Cocodrilo", "Oso"]
     def filtrar_mascota(mascota):
+        """Función que itera sobre cada mascota en la lista dada, comparando si se encuentra
+        entre las mascotas prohibidas en España (previamente definidas)
+
+        Args:
+            mascota (str): Cada mascota de la lista
+
+        Returns:
+            str: Mascota que no está prohibida
+        """
         if mascota.title() not in mascotas_prohibidas_España:
             return mascota
     lista_filtrada = list(filter(filtrar_mascota, lista_mascotas))
@@ -152,4 +161,120 @@ solucion_9 =  filtrar_mascotas_prohibidas_España(lista_mascotas9)
 print('9 - Solución:', solucion_9) #el resultado devuelve 'serpiente' porque es distinto a 'serpiente pitón'
 
 ####
-#### 10 - 
+#### 10 - Escribe una función que reciba una lista de números y calcule su promedio. Si la lista está vacía,
+# lanza una excepción personalizada y maneja el error adecuadamente:
+
+lista_numeros10 = [5, 8, 6, -6, 22, 10, 1]
+
+def calcular_promedio_lista_numeros (lista_numeros):
+    """Función para cacluclar el valor promedio de una lista de números
+
+    Args:
+        lista_numeros (list): lista de números de la que calcular la media
+
+    Returns:
+        float: media
+    """
+    try:
+        media = sum(lista_numeros) / len(lista_numeros)
+        return round(media, 3)
+    except ZeroDivisionError:
+        return ('No se puede calcular la media de una lista vacía.')
+
+solucion_10 = calcular_promedio_lista_numeros(lista_numeros10)
+print('10 - Solución:', solucion_10)
+
+####
+#### 11 -  Escribe un programa que pida al usuario que introduzca su edad. Si el usuario ingresa un valor no
+# numérico o un valor fuera del rango esperado (por ejemplo, menor que 0 o mayor que 120), maneja las excep-
+# ciones adecuadamente.
+
+# try:
+#     edad_usuario = int(input('Por favor, introduzca su edad: '))
+#     if edad_usuario < 0 or edad_usuario > 120:
+#         print('La edad ingresada debe ser un número válido')
+# except ValueError:
+#     print('La edad ingresada debe ser un número válido')
+
+####
+#### 12 - Genera una función que al recibir una frase devuelva una lista con la longitud de cada palabra. Usa
+# la función map():
+
+frase12 = "Me está encantando estudiar Data Science"
+
+def listar_len_palabras_en_frase (frase):
+    """Esta función divide la frase por palabras, y luego pasa esa lista por un map() para que pase la len()
+    por cada palabra de la lista
+
+    Args:
+        frase (str): Frase cuyas palabras queremos transformar en una lista de numeros que indiquen la
+        longitud de las palabras
+
+    Returns:
+        list: lista de numeros indicando la longitud de cada palabra
+    """
+    lista_palabras = frase.split(' ')
+    lista_len_palabras = list(map(len, lista_palabras))
+    return lista_len_palabras
+
+solucion_12 = listar_len_palabras_en_frase(frase12)
+print('12 - Solución:', solucion_12)
+
+####
+#### 13 -  Genera una función la cual, para un conjunto de caracteres, devuelva una lista de tuplas con cada
+# letra en mayúsculas y minúsculas. Las letras no pueden estar repetidas .Usa la función map():
+
+caracteres13 = 'kcgwusncoisbhc'
+
+def listar_caracteres_may_min (texto):
+    """Esta función itera sobre los caracteres de un texto, y devuelve una tupla con los valores
+    (Mayuscula, minuscula) de cada letra iterada. Los guarda como un set para evitar valores duplicados, 
+    que posteriormente se transforma en lista
+
+    Args:
+        texto (str): caracteres a iterar
+
+    Returns:
+        list: lista con valores de letras en formato de tupla (Mayuscula, minuscula) sin valores repetidos
+    """
+    lista_tuplas_may_min = list(set(map(lambda x: (x.upper(), x.lower()), texto)))
+    return lista_tuplas_may_min
+
+solucion_13 = listar_caracteres_may_min(caracteres13)
+print('13 - Solución:', solucion_13)
+
+####
+#### 14 - Crea una función que retorne las palabras de una lista de palabras que comience con una letra en
+# especifico. Usa la función filter():
+
+lista_palabras14 = ['amigo', 'trabajo', 'Comida', 'tesoro', 'cámara', 'crear']
+
+def filtrar_empieza_por (lista_palabras, letra):
+    """Esta función itera por cada palabra de la lista, comprueba si empieza por la letra especificada y solo
+    devuelvelos valores verdaderos
+
+    Args:
+        lista_palabras (list): lista de strings
+        letra (str): letra especificada por la que comprobar si empiezan las palabras de la lista
+
+    Returns:
+        list: lista filtrada
+    """
+    lista_filtrada = list(filter(lambda x: x.lower().startswith(letra.lower()), lista_palabras))
+    return lista_filtrada
+
+solucion_14 = filtrar_empieza_por(lista_palabras14, "C")
+print('14 - Solución:', solucion_14)
+
+####
+#### 15 - Crea una función lambda que sume 3 a cada número de una lista dada:
+
+lista_numeros15 = [-5, 8, 6, -6, 22, 10, 1]
+
+solucion_15 = list(map(lambda x: x+3, lista_numeros15))
+print('15 - Solución:', solucion_15)
+
+####
+#### 16 - 
+
+print('FALTA QUITAR COMENTARIO DEL 8, 11')
