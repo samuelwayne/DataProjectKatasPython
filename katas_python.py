@@ -1,3 +1,5 @@
+from functools import reduce
+
 ####
 #### 1 - Función que cuente la frecuencia de las letras en un string, exceptuar espacios:
 
@@ -123,15 +125,19 @@ print('7 - Solución:', solucion_7)
 # un valor no numérico o intenta dividir por cero, maneja esas excepciones de manera adecuada. Asegúrate
 # de mostrar un mensaje indicando si la división fue exitosa o no.
 
-# try:
-#     numero_x_8 = int(input('Escriba un número: '))
-#     numero_y_8 = int(input('Escriba otro numero por el que quiera dividir el primero: '))
-#     solucion_8 = numero_x_8 / numero_y_8
-#     print('Operación realizada con éxito!\n8 - Solución:', solucion_8)
-# except ValueError:
-#     print('División no realizada. No es posible operar ese valor. Por favor, debe introducir un número.')
-# except ZeroDivisionError:
-#     print('División no realizada. No es posible dividir entre 0.')
+def dividir_dos_numeros ():
+    try:
+        numero_x = int(input('Escriba un número: '))
+        numero_y = int(input('Escriba otro numero por el que quiera dividir el primero: '))
+        solucion = numero_x / numero_y
+        return print(f'Operación realizada con éxito! Solución: {solucion}')
+    except ValueError:
+        return 'División no realizada. No es posible operar ese valor. Por favor, debe introducir un número.'
+    except ZeroDivisionError:
+        return 'División no realizada. No es posible dividir entre 0. Por favor, debe introducir un número válido.'
+
+# solucion_8 = dividir_dos_numeros()
+# print(f'8 - {solucion_8}')
 
 ####
 #### 9 - Escribe una función que tome una lista de nombres de mascotas como parámetro y devuelva una nueva
@@ -189,12 +195,17 @@ print('10 - Solución:', solucion_10)
 # numérico o un valor fuera del rango esperado (por ejemplo, menor que 0 o mayor que 120), maneja las excep-
 # ciones adecuadamente.
 
-# try:
-#     edad_usuario = int(input('Por favor, introduzca su edad: '))
-#     if edad_usuario < 0 or edad_usuario > 120:
-#         print('La edad ingresada debe ser un número válido')
-# except ValueError:
-#     print('La edad ingresada debe ser un número válido')
+def introduzca_edad ():
+    try:
+        edad_usuario = int(input('Por favor, introduzca su edad: '))
+        if edad_usuario < 0 or edad_usuario > 120:
+            return 'La edad ingresada debe ser un número válido'
+    except ValueError:
+        return 'La edad ingresada debe ser un número válido'
+    return 'Solución: ', edad_usuario
+
+# solucion_11 = introduzca_edad()
+# print(f'11 - {solucion_11}')
 
 ####
 #### 12 - Genera una función que al recibir una frase devuelva una lista con la longitud de cada palabra. Usa
@@ -250,8 +261,8 @@ print('13 - Solución:', solucion_13)
 lista_palabras14 = ['amigo', 'trabajo', 'Comida', 'tesoro', 'cámara', 'crear']
 
 def filtrar_empieza_por (lista_palabras, letra):
-    """Esta función itera por cada palabra de la lista, comprueba si empieza por la letra especificada y solo
-    devuelvelos valores verdaderos
+    """Esta función itera por cada palabra de la lista, comprueba si empieza por la letra especificada y
+    solo devuelve los valores verdaderos
 
     Args:
         lista_palabras (list): lista de strings
@@ -275,6 +286,92 @@ solucion_15 = list(map(lambda x: x+3, lista_numeros15))
 print('15 - Solución:', solucion_15)
 
 ####
-#### 16 - 
+#### 16 - Escribe una función que tome una cadena de texto y un número entero n como parámetros
+# y devuelva una lista de todas las palabras que sean más largas que n. Usa la función filter():
+
+cadena_texto16 = 'Érase una vez un tremendo texto escrito en Python' 
+
+def filtrar_longitud_palabras (texto, n):
+    """Esta función filtra por longitud de palabra dado un tamaño n y devuelve la lista filtrada
+
+    Args:
+        texto (str): cadena de texto cuyas longitud de palabras queremos comparar
+        n (int): longitud de palabra a usar en el filtro
+    """
+    def comparar_len_palabra (palabra):
+        if len(palabra) > n:
+            return palabra
+    lista_palabras = texto.split(' ')
+    lista_filtrada = list(filter(comparar_len_palabra, lista_palabras))
+    return lista_filtrada
+
+solucion_16 = filtrar_longitud_palabras (cadena_texto16, 5)
+print('16 - Solución:', solucion_16)
+
+####
+#### 17 - Crea una función que tome una lista de dígitos y devuelva el número correspondiente. Por ejemplo,
+# [5,7,2] corresponde al número quinientos setenta y dos (572). Usa la función reduce():
+
+lista_digitos17 = [8, 4, 6, 1]
+
+def digitos_a_numero (lista_digitos):
+    """Dada una lista de digitos los junta todos en un solo numero, sumando cada digito como str
+
+    Args:
+        lista_digitos (list): lista de numeros enteros de 1 digito
+    """
+    def añadir_digito (digito1, digito2):
+        #compara si es la primera vez para que añada al digito1 el digito2
+        if len(str(digito1)) == len(str(digito2)):
+            numero_final = str(digito1) + str(digito2)
+            return int(numero_final)
+        #en el resto de casos añade el digito2 a la suma de lo anetrior
+        else:
+            numero_final = str(digito1)
+            numero_final += str(digito2)
+            return int(numero_final)
+    numero_devuelto = reduce(añadir_digito, lista_digitos)
+    return numero_devuelto
+
+solucion_17 = digitos_a_numero(lista_digitos17)
+print('17 - Solución:', solucion_17)
+
+####
+#### 18 - Escribe un programa en Python que cree una lista de diccionarios que contenga información de
+# estudiantes (nombre, edad, calificación) y use la función filter para extraer a los estudiantes con
+# una calificación mayor o igual a 90. Usa la función filter():
+
+lista_datos18 = [("Pepito", 22, 85), ("Fulanita", 25, 75), ("Juanito", 26, 95), ("Menganita", 24, 90)]
+
+def crear_dict_y_filtrar_nota_90 (lista):
+    def crear_diccionario (tupla):
+        #Esta función coge los valores de la tupla y los reorganiza para crear el diccionario
+        x, y, z = tupla
+        item_en_tupla = (x, (y, z))
+        return item_en_tupla
+    diccionario = dict(map(crear_diccionario, lista))
+    def filtrar_nota_90 (item):
+        #Esta función coge cada item del diccionario y los separa, para comparar únicamente la nota
+        #Después devuelve únicamente los items cuya nota es igual o superior a 90
+        nombre, valores = item
+        edad, nota = valores
+        if nota >= 90:
+            return item
+    diccio_filtrado = dict(filter(filtrar_nota_90, diccionario.items()))
+    return diccio_filtrado
+
+solucion_18 = crear_dict_y_filtrar_nota_90(lista_datos18)
+print('18 - Solución:', solucion_18)
+
+####
+#### 19 - Crea una función lambda que filtre los números impares de una lista dada:
+
+lista_numeros19 = [5, 2, 6, 7, 8, 3, 11]
+
+solucion_19 = list(filter(lambda x: x % 2 != 0, lista_numeros19))
+print('19 - Solución:', solucion_19)
+
+####
+#### 20 - 
 
 print('FALTA QUITAR COMENTARIO DEL 8, 11')
