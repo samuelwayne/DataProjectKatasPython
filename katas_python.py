@@ -372,6 +372,135 @@ solucion_19 = list(filter(lambda x: x % 2 != 0, lista_numeros19))
 print('19 - Solución:', solucion_19)
 
 ####
-#### 20 - 
+#### 20 - Para una lista con elementos tipo integer y string obtén una nueva lista sólo con los
+# valores int. Usa la función filter():
+
+lista_mixta20 = ["5", 2, '6', "7", 8, 3, "11"]
+
+def comprobar_integer (valor):
+    try:
+        if valor.is_integer():
+            return True
+    except AttributeError:
+        return False
+
+solucion_20 = list(filter(comprobar_integer, lista_mixta20))
+print('20 - Solución:', solucion_20)
+
+
+####
+#### 21 - Crea una función que calcule el cubo de un número dado mediante una función lambda:
+
+numero21 = 21
+
+numero_al_cubo = lambda x: x**3
+
+solucion_21 = numero_al_cubo(numero21)
+print('21 - Solución:', solucion_21)
+
+####
+#### 22 - Dada una lista numérica, obtén el producto total de los valores de dicha lista. Usa la
+# función reduce():
+
+lista_productos22 = [2, 5, 4, 6, 12]
+
+solucion_22 = reduce(lambda x, y: x*y, lista_productos22)
+print('22 - Solución:', solucion_22)
+
+####
+#### 23 - Concatena una lista de palabras. Usa la función reduce():
+
+lista_palabras23 = ['amigo', 'trabajo', 'Comida', 'tesoro']
+
+solucion_23 = reduce(lambda x, y: x+y, lista_palabras23)
+print('23 - Solución:', solucion_23)
+
+####
+#### 24 - Calcula la diferencia total en los valores de una lista. Usa la función reduce():
+
+lista_numeros24 = [8, 6, -4, 3, 23, -11, 7]
+
+solucion_24 = reduce(lambda x, y: x-y, lista_numeros24)
+print('24 - Solución:', solucion_24)
+
+####
+#### 25 - Crea una función que cuente el número de caracteres en una cadena de texto dada:
+
+texto_25 = 'Esta es una cadena de texto'
+
+def contar_caracteres (texto):
+    numero_caracteres = 0
+    for i in texto:
+        if i.lower() in 'abcdefghijklmnñopqrstuwxyz':
+            numero_caracteres += 1
+        else:
+            continue
+    return numero_caracteres
+
+solucion_25 = contar_caracteres(texto_25)
+print('25 - Solución:', solucion_25)
+
+####
+#### 26 - Crea una función lambda que calcule el resto de la división entre dos números dados:
+
+resto_division = lambda x, y: x % y
+
+solucion_26 = resto_division(11, 4)
+print('26 - Solución:', solucion_26)
+
+####
+#### 27 - Crea una función que calcule el promedio de una lista de números:
+
+lista_numeros27 = [51, 56, 57, 49, 45, 55]
+
+promedio_numeros = lambda x: round((sum(x) / len(x)), 3)
+
+solucion_27 = promedio_numeros(lista_numeros27)
+print('27 - Solución:', solucion_27)
+
+
+####
+#### 28 - Crea una función que busque y devuelva el primer elemento duplicado en una lista dada
+
+lista_mixta28 = ['gato', 'conejo', 4, [9, 1], 4.25, 4.25, "HOLA"]
+
+def encontrar_primer_duplicado (lista):
+    """Función recursiva que compara todos los elementos de una lista con el primero, y devuelve el primer duplicado.
+    En caso contrario, elimina el primer valor de la lista y repite el proceso hasta que la lista solo tenga un único valor.
+
+    Args:
+        lista (list): lista en la que buscar el duplicado
+
+    Returns:
+        any_type: primer elemento duplicado
+    """
+    while len(lista) > 1:
+        #Damos un valor a resultado por defecto
+        resultado = None
+        #Iteramos en la lista saltando el primer valor, para comparar todos con el primer valor
+        for elemento in lista[1:]:
+            if lista[0] == elemento:
+                resultado = elemento
+                return resultado
+            else:
+                continue
+        #Si el resultado deja de ser None, se devuelve el resultado
+        if resultado != None:
+            return print(resultado)
+        #Si no, se elimina el primer valor y se llama a sí misma la función... 
+        else:
+            lista.pop(0)
+            #... hasta que solo quede un único valor, y en tal caso nos informa que no hay elementos duplicados
+            if len(lista) == 1:
+                return print('No hay elementos duplicados')
+            encontrar_primer_duplicado(lista) 
+
+
+solucion_28 = encontrar_primer_duplicado(lista_mixta28)
+print('28 - Solución: ', solucion_28)
+
+####
+#### 29 - 
+
 
 print('FALTA QUITAR COMENTARIO DEL 8, 11')
