@@ -465,8 +465,9 @@ print('27 - Solución:', solucion_27)
 lista_mixta28 = ['gato', 'conejo', 4, [9, 1], 4.25, 4.25, "HOLA"]
 
 def encontrar_primer_duplicado (lista):
-    """Función recursiva que compara todos los elementos de una lista con el primero, y devuelve el primer duplicado.
-    En caso contrario, elimina el primer valor de la lista y repite el proceso hasta que la lista solo tenga un único valor.
+    """Función recursiva que compara todos los elementos de una lista con el primero, y devuelve el
+    primer duplicado. En caso contrario, elimina el primer valor de la lista y repite el proceso
+    hasta que la lista solo tenga un único valor.
 
     Args:
         lista (list): lista en la que buscar el duplicado
@@ -490,7 +491,8 @@ def encontrar_primer_duplicado (lista):
         #Si no, se elimina el primer valor y se llama a sí misma la función... 
         else:
             lista.pop(0)
-            #... hasta que solo quede un único valor, y en tal caso nos informa que no hay elementos duplicados
+            #... hasta que solo quede un único valor, y en tal caso nos informa que
+            # no hay elementos duplicados
             if len(lista) == 1:
                 return print('No hay elementos duplicados')
             encontrar_primer_duplicado(lista) 
@@ -500,7 +502,78 @@ solucion_28 = encontrar_primer_duplicado(lista_mixta28)
 print('28 - Solución: ', solucion_28)
 
 ####
-#### 29 - 
+#### 29 - Crea una función que convierta una variable en una cadena de texto y enmascare todos
+# los caracteres con el carácter '#', excepto los últimos cuatro:
+
+pin29 = 6848695411
+
+def enseñar_contarseña (pin):
+    hashtags = '#' * (len(str(pin)) - 4)
+    parte_mostrada = str(pin)[-5:-1:1]
+    return hashtags+parte_mostrada
+
+solucion_29 = enseñar_contarseña(pin29)
+print('29 - Solución: ', solucion_29)
 
 
-print('FALTA QUITAR COMENTARIO DEL 8, 11')
+####
+#### 30 - Crea una función que determine si dos palabras son anagramas, es decir, si están formadas
+# por las mismas letras pero en diferente orden:
+
+palabra30_1 = 'barco' 
+palabra30_2 = 'cobra'
+
+def check_anagrama (palabra1, palabra2):
+    letras_palabra1 = contar_frecuencia_letras(palabra1)
+    letras_palabra2 = contar_frecuencia_letras(palabra2)
+    if letras_palabra1 == letras_palabra2:
+        return (f'"{palabra1}" es un anagrama de "{palabra2}"')
+
+    else:
+        return (f'"{palabra1}" NO es un anagrama de "{palabra2}"')
+    
+solucion_30 = check_anagrama(palabra30_1, palabra30_2)
+print('30 - Solución: ', solucion_30)
+
+####
+#### 31 - Crea una función que solicite al usuario ingresar una lista de nombres y luego solicite
+# un nombre para buscar en esa lista. Si el nombre está en la lista, se imprime un mensaje indicando
+# que fue encontrado, de lo contrario, se lanza una excepción.
+
+lista31 = "Pablo, Ana, María, Cristian, Paloma"
+nombre31 = 'Ana'
+
+def buscar_nombre ():
+        lista = (input('Por favor, ingrese una lista de nombres: ')).split(', ')
+        nombre = input('Por favor, ingrese el nombre que desea buscar: ')
+        for nombres in lista:
+            if nombre == nombres:
+                return 'El nombre se encuentra en la lista'
+        return 'Nombre no encontrado'
+    
+# solucion_31 = buscar_nombre()
+# print('31 - Solución: ', solucion_31)
+
+####
+#### 32 -  Crea una función que tome un nombre completo y una lista de empleados, busque el nombre
+# completo en la lista y devuelve el puesto del empleado si está en la lista, de lo contrario,
+# devuelve un mensaje indicando que la persona no trabaja aquí:
+
+lista32 = [('Pablo López Susarte', 'Gerente'), ('Ana González del Barrio', 'Supervisora'),
+('Guillermo Paitán Carrasco', 'RRHH'), ('Hortensia Gómez Expósito', 'Secretaria')]
+nombre32 = 'Ana González del Barrio'
+
+def buscar_empleado (nombre_completo, lista_empleados):
+    dict_empleados = dict(lista_empleados)
+    try:
+        return f'{nombre_completo} trabaja como {dict_empleados[nombre_completo].lower()}'
+    except KeyError:
+        return 'La persona indicada no trabaja aquí'
+
+solucion_32 = buscar_empleado(nombre32, lista32)
+print('32 - Solución: ', solucion_32)
+
+####
+#### 33 - 
+
+print('FALTA QUITAR COMENTARIO DEL 8, 11, 31')
