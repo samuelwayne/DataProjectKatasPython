@@ -499,7 +499,7 @@ def encontrar_primer_duplicado (lista):
 
 
 solucion_28 = encontrar_primer_duplicado(lista_mixta28)
-print('28 - Solución: ', solucion_28)
+print('28 - Solución:', solucion_28)
 
 ####
 #### 29 - Crea una función que convierta una variable en una cadena de texto y enmascare todos
@@ -513,7 +513,7 @@ def enseñar_contarseña (pin):
     return hashtags+parte_mostrada
 
 solucion_29 = enseñar_contarseña(pin29)
-print('29 - Solución: ', solucion_29)
+print('29 - Solución:', solucion_29)
 
 
 ####
@@ -533,7 +533,7 @@ def check_anagrama (palabra1, palabra2):
         return (f'"{palabra1}" NO es un anagrama de "{palabra2}"')
     
 solucion_30 = check_anagrama(palabra30_1, palabra30_2)
-print('30 - Solución: ', solucion_30)
+print('30 - Solución:', solucion_30)
 
 ####
 #### 31 - Crea una función que solicite al usuario ingresar una lista de nombres y luego solicite
@@ -552,7 +552,7 @@ def buscar_nombre ():
         return 'Nombre no encontrado'
     
 # solucion_31 = buscar_nombre()
-# print('31 - Solución: ', solucion_31)
+# print('31 - Solución:', solucion_31)
 
 ####
 #### 32 -  Crea una función que tome un nombre completo y una lista de empleados, busque el nombre
@@ -571,9 +571,116 @@ def buscar_empleado (nombre_completo, lista_empleados):
         return 'La persona indicada no trabaja aquí'
 
 solucion_32 = buscar_empleado(nombre32, lista32)
-print('32 - Solución: ', solucion_32)
+print('32 - Solución:', solucion_32)
 
 ####
-#### 33 - 
+#### 33 - Crea una función lambda que sume elementos correspondientes de dos listas dadas:
+
+lista33_1 = [5, 6, 3, 7]
+lista33_2 = [4, 2, 8, 11]
+
+sumar_elementos_listas = lambda x, y: [x[i]+y[i] for i in range(len(x))]
+solucion_33 = sumar_elementos_listas(lista33_1, lista33_2)
+print('33 - Solución:', solucion_33)
+
+####
+#### 34 -  Crea la clase Arbol , define un árbol genérico con un tronco y ramas como atributos.
+# Los métodos disponibles son:
+
+# crecer_tronco , nueva_rama , crecer_ramas , quitar_rama e info_arbol . El objetivo es implementar
+# estos métodos para manipular la estructura del árbol.
+
+# Código a seguir:
+#   1. Inicializar un árbol con un tronco de longitud 1 y una lista vacía de ramas.
+#   2. Implementar el método crecer_tronco para aumentar la longitud del tronco en una unidad.
+#   3. Implementar el método nueva_rama para agregar una nueva rama de longitud 1 a la lista de ramas.
+#   4. Implementar el método crecer_ramas para aumentar en una unidad la longitud de todas las ramas existentes.
+#   5. Implementar el método quitar_rama para eliminar una rama en una posición específica.
+#   6. Implementar el método info_arbol para devolver información sobre la longitud del tronco, el número
+#      de ramas y las longitudes de las mismas.
+
+class Arbol:
+    def __init__ (self, tronco=1, ramas=[]):
+        self.tronco = tronco
+        self.ramas = ramas
+
+    def crecer_tronco (self):
+        self.tronco += 1
+        return self.tronco
+    
+    def nueva_rama (self, n=1):
+        [self.ramas.append(1) for _ in range(n)]
+        return self.ramas
+    
+    def crecer_ramas (self):
+        self.ramas = [rama+1 for rama in self.ramas]
+        return self.ramas
+        
+    def quitar_rama (self, posicion):
+        self.ramas.pop(posicion)
+        return self.ramas
+    
+    def info_arbol(self):
+        def mostrar_ramas ():
+            texto = ''
+            for indice, rama in enumerate(self.ramas):
+                texto +=(f'Número rama: {indice+1} - Longitud: {rama}\n')
+            return str(texto)
+        return print(f'''
+Información del árbol:
+----------------------
+Longitud del tronco: {self.tronco}
+Número de ramas: {len(self.ramas)}
+Longitudes de las ramas:
+{mostrar_ramas()}''')
+    
+
+# Caso de uso:
+# 1. Crear un árbol.
+# 2. Hacer crecer el tronco del árbol una unidad.
+# 3. Añadir una nueva rama al árbol.
+# 4. Hacer crecer todas las ramas del árbol una unidad.
+# 5. Añadir dos nuevas ramas al árbol.
+# 6. Retirar la rama situada en la posición 2.
+# 7. Obtener información sobre el árbol.
+
+print('34 - Solución:')
+arbol1 = Arbol()
+arbol1.crecer_tronco()
+arbol1.nueva_rama()
+arbol1.crecer_ramas()
+arbol1.nueva_rama(2)
+arbol1.quitar_rama(2)
+arbol1.info_arbol()
+
+####
+#### 36 -  Crea la clase UsuarioBanco, representa a un usuario de un banco con su nombre, saldo
+# y si tiene o no cuenta corriente. Proporciona métodos para realizar operaciones como retirar
+# dinero, transferir dinero desde otro usuario y agregar dinero al saldo.
+
+# Código a seguir:
+# 1. Inicializar un usuario con su nombre, saldo y si tiene o no cuenta corriente mediante True
+# y False .
+# 2. Implementar el método retirar_dinero para retirar dinero del saldo del usuario. Lanzará un
+# error en caso de no poder hacerse.
+# 3. Implementar el método transferir_dinero para realizar una transferencia desde otro usuario
+# al usuario actual. Lanzará un error en caso de no poder hacerse.
+# 4. Implementar el método agregar_dinero para agregar dinero al saldo del usuario.
+
+class UsuarioBanco:
+    def __init__ (self, nombre, saldo, cuenta_corriente):
+        self.nombre = nombre.title()
+        
+
+
+
+
+
+# Caso de uso:
+# 1. Crear dos usuarios: "Alicia" con saldo inicial de 100 y "Bob" con saldo inicial de 50, ambos
+# con cuenta corriente.
+# 2. Agregar 20 unidades de saldo de "Bob".
+# 3. Hacer una transferencia de 80 unidades desde "Bob" a "Alicia".
+# 4. Retirar 50 unidades de saldo a "Alicia".
 
 print('FALTA QUITAR COMENTARIO DEL 8, 11, 31')
