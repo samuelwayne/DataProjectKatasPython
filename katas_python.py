@@ -1,4 +1,6 @@
 from functools import reduce
+import datetime
+from math import pi
 
 ####
 #### 1 - Función que cuente la frecuencia de las letras en un string, exceptuar espacios:
@@ -591,13 +593,13 @@ print('33 - Solución:', solucion_33)
 # estos métodos para manipular la estructura del árbol.
 
 # Código a seguir:
-#   1. Inicializar un árbol con un tronco de longitud 1 y una lista vacía de ramas.
-#   2. Implementar el método crecer_tronco para aumentar la longitud del tronco en una unidad.
-#   3. Implementar el método nueva_rama para agregar una nueva rama de longitud 1 a la lista de ramas.
-#   4. Implementar el método crecer_ramas para aumentar en una unidad la longitud de todas las ramas existentes.
-#   5. Implementar el método quitar_rama para eliminar una rama en una posición específica.
-#   6. Implementar el método info_arbol para devolver información sobre la longitud del tronco, el número
-#      de ramas y las longitudes de las mismas.
+# 1. Inicializar un árbol con un tronco de longitud 1 y una lista vacía de ramas.
+# 2. Implementar el método crecer_tronco para aumentar la longitud del tronco en una unidad.
+# 3. Implementar el método nueva_rama para agregar una nueva rama de longitud 1 a la lista de ramas.
+# 4. Implementar el método crecer_ramas para aumentar en una unidad la longitud de todas las ramas existentes.
+# 5. Implementar el método quitar_rama para eliminar una rama en una posición específica.
+# 6. Implementar el método info_arbol para devolver información sobre la longitud del tronco, el número
+# de ramas y las longitudes de las mismas.
 
 class Arbol:
     def __init__ (self, tronco=1, ramas=[]):
@@ -668,12 +670,34 @@ arbol1.info_arbol()
 # 4. Implementar el método agregar_dinero para agregar dinero al saldo del usuario.
 
 class UsuarioBanco:
-    def __init__ (self, nombre, saldo, cuenta_corriente):
+    def __init__ (self, nombre:str, saldo:int, cuenta_corriente:bool):
         self.nombre = nombre.title()
-        
+        self.saldo = saldo
+        self.cuenta_corriente = cuenta_corriente
 
+    def retirar_dinero (self, cantidad_retirada):
+        if cantidad_retirada <= self.saldo:   
+            self.saldo -= cantidad_retirada
+            return self.saldo
+        else:
+            return print('No ha sido posible retirar la cantidad indicada. Saldo insuficiente.')
+    
+    def transferir_dinero (self, cantidad_transferida:int, destinatario:object):
+        if cantidad_transferida <= self.saldo:
+            self.saldo -= cantidad_transferida
+            destinatario.saldo += cantidad_transferida
+            return self.saldo, destinatario.saldo
+        else:
+            return print('No ha sido posible realizar la transferencia. Saldo insuficiente.')
 
-
+    def agregar_dinero (self, cantidad_añadida:int):
+        self.saldo += cantidad_añadida
+        return self.saldo
+    
+    def saldo_actual (self):
+        return print(f'''
+Nombre del usuario: {self.nombre}
+Saldo actual: {self.saldo}''')
 
 
 # Caso de uso:
@@ -682,5 +706,176 @@ class UsuarioBanco:
 # 2. Agregar 20 unidades de saldo de "Bob".
 # 3. Hacer una transferencia de 80 unidades desde "Bob" a "Alicia".
 # 4. Retirar 50 unidades de saldo a "Alicia".
+
+print('36 - Solución:')
+alicia = UsuarioBanco('alicia', 100, True)
+bob = UsuarioBanco('bob', 50, True)
+bob.agregar_dinero(20)
+bob.transferir_dinero(80, alicia)
+alicia.retirar_dinero(50)
+bob.saldo_actual()
+alicia.saldo_actual()
+
+####
+#### 37 - Crea una función llamada procesar_texto que procesa un texto según la opción especificada:
+# contar_palabras , reemplazar_palabras , eliminar_palabra . Estas opciones son otras funciones que
+# tenemos que definir primero y llamar dentro de la función procesar_texto.
+
+# Código a seguir:
+# 1. Crear una función contar_palabras para contar el número de veces que aparece cada palabra en el
+# texto. Tiene que devolver un diccionario.
+# 2. Crear una función reemplazar_palabras para remplazar una palabra_original del texto por una
+# palabra_nueva . Tiene que devolver el texto con el remplazo de palabras.
+# 3. Crear una función eliminar_palabra para eliminar una palabra del texto. Tiene que devolver el
+# texto con la palabra eliminada.
+# 4. Crear la función procesar_texto que tome un texto, una opción(entre "contar", "reemplazar",
+# "eliminar") y un número de argumentos variable según la opción indicada.
+
+def procesar_texto (texto, opcion, *args):
+    """Función para procesar un texto según la opción indicada.
+
+    Args:
+        texto (str): texto a editar
+        opcion (str): Seleccionar una: 'contar', 'reemplazar' o 'eliminar'
+
+    """
+    def contar_palabras (texto): 
+            #se crea un set con las palabras del texto
+            set_palabras_texto = set()
+            #creamos una lista de palabras, guardando en la variable solo las letras, cambiando los ' ' por '#'
+            # y obviando el resto de caracteres
+            simplificar_string = ''
+            for c in texto:
+                if c.lower() in 'aábcdeéfghiíjklmnñoópqrstuúvwxyz ':
+                    simplificar_string += c
+                else:
+                    continue
+            #dividimos el string partiendo por los espacios
+            lista_palabras = simplificar_string.split(' ')
+            #y guardamos cada palabra el un set, para que no estén repetidas
+            [set_palabras_texto.add(palabra) for palabra in lista_palabras]
+            #se cuentan cuantas veces aparecen repetidas cada palabra
+            diccio_frecuencia_palabras = dict([(palabra, texto.count(palabra)) for palabra in set_palabras_texto])
+            return print(f'\n--> CONTAR - Diccionario palabras:\n{diccio_frecuencia_palabras}')
+
+    def reemplazar_palabras (palabra_antigua, palabra_nueva, texto):
+        texto = texto.replace(palabra_antigua, palabra_nueva)
+        print(f'\n--> REEMPLAZAR - La palabra "{palabra_antigua}" ha sido reemplazada por "{palabra_nueva}".')
+        return print(texto)
+
+    def eliminar_palabra (palabra_eliminada, texto):
+        #primero dividimos el texto por la palabra a eliminar, porque no podemos cambiar un string
+        nuevo_texto = texto.split(palabra_eliminada)
+        #eliminamos posibles espacios
+        nuevo_texto[1] = nuevo_texto[1].strip(' ')
+        #reagrupamos el texto
+        texto = ''.join(nuevo_texto)
+        print(f'\n--> ELIMINAR - La palabra "{palabra_eliminada}" ha sido eliminada del texto.')
+        return print(texto)
+
+    if opcion == 'contar':
+        contar_palabras(texto)
+    elif opcion == 'reemplazar':
+        palabra_antigua, palabra_nueva = args
+        reemplazar_palabras(palabra_antigua, palabra_nueva, texto)
+    elif opcion == 'eliminar':
+        palabra_eliminada = args[0]
+        eliminar_palabra(palabra_eliminada, texto)
+    else:
+        print('Seleccione una opción válida.')
+
+
+
+# Caso de uso:
+# Comprueba el funcionamiento completo de la función procesar_texto
+
+texto37 = 'En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga antigua, rocín flaco y galgo corredor.'
+
+print(f'\n37 - Solución:')
+procesar_texto(texto37, 'contar')
+procesar_texto(texto37, 'reemplazar', 'Mancha', 'España profunda')
+procesar_texto(texto37, 'eliminar', 'hidalgo')
+
+####
+#### 38 - Genera un programa que nos diga si es de noche, de día o tarde según la hora proporcionada
+# por el usuario:
+
+def momento_dia ():
+    hora = datetime.datetime.now().time()
+    if hora < datetime.time(5, 00, 00) or hora > datetime.time(21, 00, 00):
+        return print('Ahora mismo es de noche.')
+    elif hora < datetime.time(12,00,00):
+        return print('Ahora mismo es por la mañana.')
+    else:
+        return print('Ahora mismo es por la tarde.')
+
+print(f'\n38 - Solución:')
+momento_dia()
+
+####
+#### 39 -  Escribe un programa que determine qué calificación en texto tiene un alumno en base a su 
+# calificación numérica.
+# Las reglas de calificación son:
+# - 0 - 69 insuficiente
+# - 70 - 79 bien
+# - 80 - 89 muy bien
+# - 90 - 100 excelente
+
+def calificacion (nota):
+    if nota < 70:
+        return print('Insuficiente')
+    elif nota < 80:
+        return print('Bien')
+    elif nota < 90:
+        return print('Muy bien')
+    else:
+        return print('Excelente')
+
+nota39 = 92
+
+print('39 - Solución:')
+calificacion(nota39)
+
+####
+#### 40 - Escribe una función que tome dos parámetros: figura (una cadena que puede ser "rectangulo",
+# "circulo" o "triangulo" ) y datos (una tupla con los datos necesarios para calcular el área de la figura):
+
+def calcular_area (figura, datos):
+
+    if figura == 'rectangulo':
+        base, altura = datos
+        area = base * altura
+        return print(f'Area del {figura}: {round(area, 2)}')
+
+    elif figura == 'circulo':
+        radio = datos[0]
+        area = pi*radio**2
+        return print(f'Area del {figura}: {round(area, 2)}')
+
+    elif figura == 'triangulo':
+        base, altura = datos
+        area = base * altura / 2
+        return print(f'Area del {figura}: {round(area, 2)}')
+
+print('40 - Solución:')
+calcular_area('rectangulo', (5, 6))
+calcular_area('circulo', (4, ))
+calcular_area('triangulo', (7, 2))
+
+####
+#### 41 -  En este ejercicio, se te pedirá que escribas un programa en Python que utilice condicionales
+# para determinar el monto final de una compra en una tienda en línea, después de aplicar un descuento.
+# El programa debe hacer lo siguiente:
+
+# 1. Solicita al usuario que ingrese el precio original de un artículo.
+# 2. Pregunta al usuario si tiene un cupón de descuento (respuesta sí o no).
+# 3. Si el usuario responde que sí, solicita que ingrese el valor del cupón de descuento.
+# 4. Aplica el descuento al precio original del artículo, siempre y cuando el valor del cupón sea válido
+# (es decir, mayor a cero). Por ejemplo, descuento de 15€. 
+# 5. Muestra el precio final de la compra, teniendo en cuenta el descuento aplicado o sin él. 
+# 6. Recuerda utilizar estructuras de control de flujo como if, elif y else para llevar a cabo estas
+# acciones en tu programa de Python.
+
+
 
 print('FALTA QUITAR COMENTARIO DEL 8, 11, 31')
