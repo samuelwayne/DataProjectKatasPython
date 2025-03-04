@@ -132,14 +132,14 @@ def dividir_dos_numeros ():
         numero_x = int(input('Escriba un número: '))
         numero_y = int(input('Escriba otro numero por el que quiera dividir el primero: '))
         solucion = numero_x / numero_y
-        return print(f'Operación realizada con éxito! Solución: {solucion}')
+        return (f'Operación realizada con éxito! Solución: {solucion}')
     except ValueError:
         return 'División no realizada. No es posible operar ese valor. Por favor, debe introducir un número.'
     except ZeroDivisionError:
         return 'División no realizada. No es posible dividir entre 0. Por favor, debe introducir un número válido.'
 
-# solucion_8 = dividir_dos_numeros()
-# print(f'8 - {solucion_8}')
+solucion_8 = dividir_dos_numeros()
+print(f'8 - {solucion_8}')
 
 ####
 #### 9 - Escribe una función que tome una lista de nombres de mascotas como parámetro y devuelva una nueva
@@ -204,10 +204,10 @@ def introduzca_edad ():
             return 'La edad ingresada debe ser un número válido'
     except ValueError:
         return 'La edad ingresada debe ser un número válido'
-    return 'Solución: ', edad_usuario
+    return edad_usuario
 
-# solucion_11 = introduzca_edad()
-# print(f'11 - {solucion_11}')
+solucion_11 = introduzca_edad()
+print(f'11 - Solución: Su edad es de {solucion_11} años.')
 
 ####
 #### 12 - Genera una función que al recibir una frase devuelva una lista con la longitud de cada palabra. Usa
@@ -553,8 +553,8 @@ def buscar_nombre ():
                 return 'El nombre se encuentra en la lista'
         return 'Nombre no encontrado'
     
-# solucion_31 = buscar_nombre()
-# print('31 - Solución:', solucion_31)
+solucion_31 = buscar_nombre()
+print('31 - Solución:', solucion_31)
 
 ####
 #### 32 -  Crea una función que tome un nombre completo y una lista de empleados, busque el nombre
@@ -876,6 +876,29 @@ calcular_area('triangulo', (7, 2))
 # 6. Recuerda utilizar estructuras de control de flujo como if, elif y else para llevar a cabo estas
 # acciones en tu programa de Python.
 
+def compra_en_linea ():
+    #pedimos que ingrese el valor original y gestionamos el posible error
+    try:
+        precio_original = int(input('Ingrese el precio original del artículo: '))
+    except ValueError:
+        return print('El valor del precio original debe ser un número válido.')
+    #luego pedimos que ingrese si tiene cupón de descuento
+    tiene_cupon = input('¿Tiene cupón de descuento? Escriba "SI" o "NO": ')
+    if tiene_cupon.lower() == 'sí' or tiene_cupon.lower() == 'si':
+        #y en caso afirmativo, pedimos añadir el valor del mismo y gestionamos posibles errores 
+        try:    
+            descuento = int(input('Ingrese el valor de descuento del cupón: '))
+            if descuento > 0 and descuento < precio_original:
+                precio_final = precio_original - descuento
+            else:
+                return print('El valor del cupón de descuento debe ser un número válido.')
+        except ValueError:
+            return print('El valor del cupón de descuento debe ser un número válido.')
+    #si no tiene descuento el precio final es el original
+    else:
+        precio_final = precio_original
+    #finalmenete devolvemos el valor final tras aplicar o no el descuento en cada caso
+    return (f'El precio final es de {precio_final} €')
 
-
-print('FALTA QUITAR COMENTARIO DEL 8, 11, 31')
+solucion_41 = compra_en_linea()
+print(f'41 - Solución: {solucion_41}')
