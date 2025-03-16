@@ -15,13 +15,13 @@ def contar_frecuencia_letras (texto):
         texto (str): Texto pasado a la función, únicamente usando letras y espacios.
                      Otros caracteres pueden generar errores.
     """
-    
-    # Mediante esta list comprehension guardamos cada tipo de letra distinto en un set
-    set_letras_texto = set()
-    [set_letras_texto.add(letra) for letra in texto.lower() if letra != ' ']
+    texto_analizar = texto.lower()
 
-    # Mediante una list comprehension creamos cada par de clave valor y convertimos la lista en diccionario
-    diccio_frecuencia_letras = dict([(letra, texto.lower().count(letra)) for letra in set_letras_texto])
+    # Mediante este set comprehension guardamos cada tipo de letra distinto en un set
+    set_letras_texto = set(letra for letra in texto_analizar if letra != ' ')
+
+    # Mediante un dictionary comprehension creamos cada par de clave-valor en el diccionario
+    diccio_frecuencia_letras = {letra: texto_analizar.count(letra) for letra in set_letras_texto}
 
     return diccio_frecuencia_letras
 
@@ -150,9 +150,10 @@ lista_mascotas9 = ["Perro", "Gato", "Serpiente", "Hámster", "tigre"]
 
 def filtrar_mascotas_prohibidas_España(lista_mascotas):
     mascotas_prohibidas_España = ["Mapache", "Tigre", "Serpiente Pitón", "Cocodrilo", "Oso"]
+    set_mascotas_prohibidas = set(mascota.lower() for mascota in mascotas_prohibidas_España)
     def filtrar_mascota(mascota):
         """Función que itera sobre cada mascota en la lista dada, comparando si se encuentra
-        entre las mascotas prohibidas en España (previamente definidas)
+        entre el set de mascotas prohibidas en España (previamente definidas)
 
         Args:
             mascota (str): Cada mascota de la lista
@@ -160,7 +161,7 @@ def filtrar_mascotas_prohibidas_España(lista_mascotas):
         Returns:
             str: Mascota que no está prohibida
         """
-        if mascota.title() not in mascotas_prohibidas_España:
+        if mascota.lower() not in set_mascotas_prohibidas:
             return mascota
     lista_filtrada = list(filter(filtrar_mascota, lista_mascotas))
     return lista_filtrada
@@ -182,12 +183,12 @@ def calcular_promedio_lista_numeros (lista_numeros):
 
     Returns:
         float: media
-    """
-    try:
+    """ 
+    if len(lista_numeros) > 0:
         media = sum(lista_numeros) / len(lista_numeros)
         return round(media, 3)
-    except ZeroDivisionError:
-        return ('No se puede calcular la media de una lista vacía.')
+    else:
+        return ValueError ('No se puede calcular la media de una lista vacía.')
 
 solucion_10 = calcular_promedio_lista_numeros(lista_numeros10)
 print('10 - Solución:', solucion_10)
@@ -322,18 +323,12 @@ def digitos_a_numero (lista_digitos):
     Args:
         lista_digitos (list): lista de numeros enteros de 1 digito
     """
-    def añadir_digito (digito1, digito2):
-        #compara si es la primera vez para que añada al digito1 el digito2
-        if len(str(digito1)) == len(str(digito2)):
-            numero_final = str(digito1) + str(digito2)
-            return int(numero_final)
-        #en el resto de casos añade el digito2 a la suma de lo anetrior
-        else:
-            numero_final = str(digito1)
-            numero_final += str(digito2)
-            return int(numero_final)
-    numero_devuelto = reduce(añadir_digito, lista_digitos)
-    return numero_devuelto
+    def str_y_join (digito1, digito2):
+        nums = (str(digito1), str(digito2))
+        num_total = ''.join(nums)
+        return num_total
+    numero_devuelto = reduce(str_y_join, lista_digitos)
+    return int(numero_devuelto)
 
 solucion_17 = digitos_a_numero(lista_digitos17)
 print('17 - Solución:', solucion_17)
@@ -379,14 +374,7 @@ print('19 - Solución:', solucion_19)
 
 lista_mixta20 = ["5", 2, '6', "7", 8, 3, "11"]
 
-def comprobar_integer (valor):
-    try:
-        if valor.is_integer():
-            return True
-    except AttributeError:
-        return False
-
-solucion_20 = list(filter(comprobar_integer, lista_mixta20))
+solucion_20 = list(filter(lambda x: isinstance(x, int), lista_mixta20))
 print('20 - Solución:', solucion_20)
 
 
@@ -477,28 +465,17 @@ def encontrar_primer_duplicado (lista):
     Returns:
         any_type: primer elemento duplicado
     """
-    while len(lista) > 1:
-        #Damos un valor a resultado por defecto
-        resultado = None
-        #Iteramos en la lista saltando el primer valor, para comparar todos con el primer valor
-        for elemento in lista[1:]:
-            if lista[0] == elemento:
-                resultado = elemento
-                return resultado
-            else:
-                continue
-        #Si el resultado deja de ser None, se devuelve el resultado
-        if resultado != None:
-            return print(resultado)
-        #Si no, se elimina el primer valor y se llama a sí misma la función... 
+    set_comprobacion = set()
+    for elemento in lista:
+        #para evitar 'unhashable type' por si el elemento es otra lista
+        if isinstance(elemento, list):
+            elemento = tuple(elemento)
+        if elemento not in set_comprobacion:
+            set_comprobacion.add(elemento)
         else:
-            lista.pop(0)
-            #... hasta que solo quede un único valor, y en tal caso nos informa que
-            # no hay elementos duplicados
-            if len(lista) == 1:
-                return print('No hay elementos duplicados')
-            encontrar_primer_duplicado(lista) 
-
+            primer_duplicado = elemento
+            return primer_duplicado
+    return 'No se encontraron elementos duplicados'
 
 solucion_28 = encontrar_primer_duplicado(lista_mixta28)
 print('28 - Solución:', solucion_28)
@@ -510,9 +487,9 @@ print('28 - Solución:', solucion_28)
 pin29 = 6848695411
 
 def enseñar_contarseña (pin):
-    hashtags = '#' * (len(str(pin)) - 4)
-    parte_mostrada = str(pin)[-5:-1:1]
-    return hashtags+parte_mostrada
+    pin = str(pin)
+    pin_enmascarado = pin[-4::1].rjust(len(pin), '#')
+    return pin_enmascarado
 
 solucion_29 = enseñar_contarseña(pin29)
 print('29 - Solución:', solucion_29)
@@ -566,11 +543,8 @@ lista32 = [('Pablo López Susarte', 'Gerente'), ('Ana González del Barrio', 'Su
 nombre32 = 'Ana González del Barrio'
 
 def buscar_empleado (nombre_completo, lista_empleados):
-    dict_empleados = dict(lista_empleados)
-    try:
-        return f'{nombre_completo} trabaja como {dict_empleados[nombre_completo].lower()}'
-    except KeyError:
-        return 'La persona indicada no trabaja aquí'
+    puesto_empleado = dict(lista_empleados).get(nombre_completo, 'La persona indicada no trabaja aquí')
+    return puesto_empleado
 
 solucion_32 = buscar_empleado(nombre32, lista32)
 print('32 - Solución:', solucion_32)
@@ -678,20 +652,25 @@ class UsuarioBanco:
     def retirar_dinero (self, cantidad_retirada):
         if cantidad_retirada <= self.saldo:   
             self.saldo -= cantidad_retirada
+            print('Se ha retirado la cantidad indicada con éxito')
             return self.saldo
         else:
-            return print('No ha sido posible retirar la cantidad indicada. Saldo insuficiente.')
+            print('No ha sido posible retirar la cantidad indicada. Saldo insuficiente.')
+            return ValueError
     
     def transferir_dinero (self, cantidad_transferida:int, destinatario:object):
         if cantidad_transferida <= self.saldo:
             self.saldo -= cantidad_transferida
             destinatario.saldo += cantidad_transferida
+            print('Se ha transferido la cantidad indicada con éxito')
             return self.saldo, destinatario.saldo
         else:
-            return print('No ha sido posible realizar la transferencia. Saldo insuficiente.')
+            print('No ha sido posible realizar la transferencia. Saldo insuficiente.')
+            return ValueError
 
     def agregar_dinero (self, cantidad_añadida:int):
         self.saldo += cantidad_añadida
+        print('Se ha agregado la cantidad indicada con éxito')
         return self.saldo
     
     def saldo_actual (self):
